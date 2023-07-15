@@ -26,9 +26,11 @@ class MainWindow(Gtk.ApplicationWindow):
 
         self.make_titlebar()
 
+        self.toast_overlay = Adw.ToastOverlay()
         self.main_box = Gtk.Box(
             hexpand_set=True, hexpand=True, orientation=Gtk.Orientation.HORIZONTAL
         )
+        self.toast_overlay.set_child(self.main_box)
 
         self.main_box.set_spacing(10)
         self.main_box.set_margin_top(10)
@@ -36,7 +38,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.main_box.set_margin_start(10)
         self.main_box.set_margin_end(10)
 
-        self.set_child(self.main_box)
+        self.set_child(self.toast_overlay)
 
         self.load_boxes()
 
@@ -250,9 +252,12 @@ class MainWindow(Gtk.ApplicationWindow):
 
         new_box_popup.destroy()
 
+        toast = Adw.Toast.new("Box Deleted!")
+        self.toast_overlay.add_toast(toast)
+
         self.delayed_rerender()
 
-    def delete_box(self, box_name: str):
+    def delete_box(self, box_name: str, *args):
         delete_box(box_name)
 
         GLib.timeout_add_seconds(1, self.delayed_rerender)
