@@ -214,6 +214,8 @@ class MainWindow(Gtk.ApplicationWindow):
         image_select_row.set_activatable_widget(image_select)
         image_select_row.add_suffix(image_select)
 
+        spinner = Gtk.Spinner()
+
         # do this down here cos the entry row needs to exist
         create_btn.connect(
             "clicked",
@@ -221,6 +223,7 @@ class MainWindow(Gtk.ApplicationWindow):
                 name_entry_row.get_text(),
                 image_select.get_selected_item(),
                 new_box_popup,
+                spinner,
             ),
         )
 
@@ -228,19 +231,19 @@ class MainWindow(Gtk.ApplicationWindow):
         boxed_list.append(image_select_row)
 
         new_box_popup_main.append(boxed_list)
+        new_box_popup_main.append(spinner)
         new_box_popup.set_child(new_box_popup_main)
         new_box_popup.present()
 
-    def on_create_box_submit(self, box_name: str, selected_image, new_box_popup):
+    def on_create_box_submit(
+        self, box_name: str, selected_image, new_box_popup, spinner
+    ):
         image = selected_image.get_string().split(" ")[-1]
-
-        spinner = Gtk.Spinner()
-        new_box_popup.set_child(Gtk.Spinner())
         spinner.start()
 
         create_box(box_name, image)
-
         spinner.stop()
+
         new_box_popup.destroy()
 
         self.delayed_rerender()
