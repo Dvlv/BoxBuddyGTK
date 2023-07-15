@@ -4,7 +4,12 @@ import gi
 
 from functools import partial
 
-from distrobox_handler import Distrobox, open_terminal_in_box, upgrade_box
+from distrobox_handler import (
+    Distrobox,
+    get_available_images,
+    open_terminal_in_box,
+    upgrade_box,
+)
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
@@ -153,7 +158,40 @@ class MainWindow(Gtk.ApplicationWindow):
         upgrade_box(box_name)
 
     def create_box(self, *args):
-        print("create_box")
+        new_box_popup = Gtk.Window()
+        new_box_popup.set_transient_for(self)
+
+        new_box_popup_main = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
+        boxed_list = Gtk.ListBox()
+        boxed_list.add_css_class("boxed-list")
+
+        # Edit Name
+        name_entry_row = Adw.EntryRow()
+        name_entry_row.set_hexpand(True)
+        name_entry_row.set_title("Name")
+
+        # Image Name
+        images = get_available_images()
+        image_select = Gtk.DropDown()
+        strlst = Gtk.StringList()
+
+        for img in images:
+            strlst.append(img)
+
+        image_select.set_model(strlst)
+
+        image_select_row = Adw.ActionRow()
+        image_select_row.set_title("Image")
+        image_select_row.set_activatable_widget(image_select)
+        image_select_row.add_suffix(image_select)
+
+        boxed_list.append(name_entry_row)
+        boxed_list.append(image_select_row)
+
+        new_box_popup_main.append(boxed_list)
+        new_box_popup.set_child(new_box_popup_main)
+        new_box_popup.show()
 
     def delayed_rerender(self):
         pass
