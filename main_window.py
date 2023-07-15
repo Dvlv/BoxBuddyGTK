@@ -22,7 +22,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.set_default_size(1280, 720)
+        self.set_default_size(800, 450)
 
         self.make_titlebar()
 
@@ -197,7 +197,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def create_box(self, *args):
         new_box_popup = Gtk.Window()
         new_box_popup.set_transient_for(self)
-        new_box_popup.set_default_size(800, 600)
+        new_box_popup.set_default_size(700, 350)
         new_box_popup.set_modal(True)
 
         title_lbl = Gtk.Label(label="Create A Distrobox")
