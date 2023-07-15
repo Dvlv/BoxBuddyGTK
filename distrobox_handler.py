@@ -110,7 +110,6 @@ def open_terminal_in_box(box_name: str):
             "distrobox",
             "enter",
             box_name,
-            "&",
         ]
     )
 
@@ -156,7 +155,7 @@ def delete_box(box_name: str):
 def create_box(box_name: str, image: str):
     cmd = f"distrobox create -i {image} -Y -n {box_name}"
 
-    return run_command_and_get_output(cmd.split(" "))
+    subprocess.run([*FLATPAK_SPAWN_ARR, *cmd.split(" ")])
 
 
 def init_new_box(box_name: str):

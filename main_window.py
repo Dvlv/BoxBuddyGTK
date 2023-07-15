@@ -7,7 +7,7 @@ from functools import partial
 from distrobox_handler import (
     Distrobox,
     create_box,
-    get_available_images,
+    get_available_images_with_distro_name,
     open_terminal_in_box,
     upgrade_box,
 )
@@ -84,6 +84,9 @@ class MainWindow(Gtk.ApplicationWindow):
             tab_title.attach(tab_title_label, 1, 0, 1, 1)
 
             tabs.append_page(tab, tab_title)
+
+        while child := self.main_box.get_first_child():
+            self.main_box.remove(child)
 
         self.main_box.append(tabs)
 
@@ -197,7 +200,7 @@ class MainWindow(Gtk.ApplicationWindow):
         name_entry_row.set_title("Name")
 
         # Image Name
-        images = get_available_images()
+        images = get_available_images_with_distro_name()
         image_select = Gtk.DropDown()
         strlst = Gtk.StringList()
 
@@ -231,7 +234,9 @@ class MainWindow(Gtk.ApplicationWindow):
     def on_create_box_submit(self, box_name: str, selected_image, new_box_popup):
         image = selected_image.get_string()
         create_box(box_name, image)
+
         new_box_popup.destroy()
+
         self.delayed_rerender()
 
     def delayed_rerender(self):
