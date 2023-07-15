@@ -28,23 +28,29 @@ def get_all_distroboxes() -> List[Distrobox]:
     distroboxes = []
 
     out, err = run_command_and_get_output(
-        [*FLATPAK_SPAWN_ARR, "distrobox", "list" "--no-color"]
+        [*FLATPAK_SPAWN_ARR, "distrobox", "list", "--no-color"]
     )
 
     if not out:
         return []
 
-    for box_line in out.split("\n"):
-        fields = box_line.split("|")
-        distroboxes.append(
-            Distrobox(
-                name=fields[1].strip(),
-                distro=try_parse_disto_name_from_url(fields[3].strip()),
-                image_url=fields[3].strip(),
-                container_id=fields[0].strip(),
-                status=fields[2].strip(),
-            )
-        )
+    out_lines = out.split("\n")
+    if len(out_lines) == 1:
+        return []
+
+    for box_line in out.split("\n")[1:]:
+        if box_line:
+            fields = box_line.split("|")
+            if len(fields) > 3:
+                distroboxes.append(
+                    Distrobox(
+                        name=fields[1].strip(),
+                        distro=try_parse_disto_name_from_url(fields[3].strip()),
+                        image_url=fields[3].strip(),
+                        container_id=fields[0].strip(),
+                        status=fields[2].strip(),
+                    )
+                )
 
     return distroboxes
 
