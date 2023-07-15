@@ -160,8 +160,28 @@ class MainWindow(Gtk.ApplicationWindow):
     def create_box(self, *args):
         new_box_popup = Gtk.Window()
         new_box_popup.set_transient_for(self)
+        new_box_popup.set_default_size(800, 600)
+        new_box_popup.set_modal(True)
+
+        title_lbl = Gtk.Label(label="Create A Distrobox")
+        title_lbl.add_css_class("header")
+
+        create_btn = Gtk.Button(label="Create")
+        create_btn.add_css_class("suggested-action")
+
+        new_box_titlebar = Adw.HeaderBar()
+        new_box_titlebar.set_title_widget(title_lbl)
+        new_box_titlebar.pack_start(create_btn)
+
+        new_box_popup.set_titlebar(new_box_titlebar)
 
         new_box_popup_main = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
+        new_box_popup_main.set_spacing(10)
+        new_box_popup_main.set_margin_top(10)
+        new_box_popup_main.set_margin_bottom(10)
+        new_box_popup_main.set_margin_start(10)
+        new_box_popup_main.set_margin_end(10)
 
         boxed_list = Gtk.ListBox()
         boxed_list.add_css_class("boxed-list")
@@ -191,7 +211,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
         new_box_popup_main.append(boxed_list)
         new_box_popup.set_child(new_box_popup_main)
-        new_box_popup.show()
+        new_box_popup.present()
 
     def delayed_rerender(self):
         pass
