@@ -265,6 +265,11 @@ class MainWindow(Gtk.ApplicationWindow):
         new_box_popup.present()
 
     def on_create_box_submit(self, box_name: str, selected_image, new_box_popup):
+        if not box_name:
+            return
+
+        box_name = box_name.replace(" ", "-")
+
         image = selected_image.get_string().split(" ")[-1]
         create_box(box_name, image)
 
@@ -278,7 +283,7 @@ class MainWindow(Gtk.ApplicationWindow):
     def delete_box(self, box_name: str, *args):
         delete_box(box_name)
 
-        GLib.timeout_add_seconds(1, self.delayed_rerender)
+        self.delayed_rerender()
 
         toast = Adw.Toast.new("Box Deleted!")
         self.toast_overlay.add_toast(toast)
