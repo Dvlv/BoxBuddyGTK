@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 
@@ -17,3 +18,15 @@ def detect_terminal() -> tuple[str, str]:
         terminal_exec_arg = "-e"
 
     return terminal, terminal_exec_arg
+
+
+def is_flatpak() -> bool:
+    """
+    Detects if running as flatpak
+    """
+    f = os.getenv("FLATPAK_ID")
+
+    if f:
+        return True
+
+    return False
