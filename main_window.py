@@ -233,10 +233,14 @@ class MainWindow(Gtk.ApplicationWindow):
 
     def on_create_box_submit(self, box_name: str, selected_image, new_box_popup):
         image = selected_image.get_string().split(" ")[-1]
+
+        spinner = Gtk.Spinner()
         new_box_popup.set_child(Gtk.Spinner())
+        spinner.start()
 
         create_box(box_name, image)
 
+        spinner.stop()
         new_box_popup.destroy()
 
         self.delayed_rerender()
