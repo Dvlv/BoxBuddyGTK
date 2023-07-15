@@ -37,6 +37,7 @@ class MainWindow(Gtk.ApplicationWindow):
         add_btn = Gtk.Button()
         add_btn.set_icon_name("list-add-symbolic")
         add_btn.connect("clicked", self.create_box)
+        add_btn.set_tooltip_text("Create A Distrobox")
 
         title_lbl = Gtk.Label(label="BoxBuddy")
         title_lbl.add_css_class("header")

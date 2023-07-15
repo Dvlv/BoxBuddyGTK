@@ -154,7 +154,7 @@ def delete_box(box_name: str):
 
 
 def create_box(box_name: str, image: str):
-    cmd = f"distrobox create -n {box_name} -i {image} -Y 2>&1"
+    cmd = f"distrobox create -i {image} -Y -n {box_name}"
 
     return run_command_and_get_output(cmd.split(" "))
 
@@ -171,6 +171,6 @@ def get_available_images():
         out_lines = out.split("\n")
         for line in out_lines:
             if line != "Images":
-                imgs.append(try_parse_disto_name_from_url(line))
+                imgs.append(line)
 
-    return sorted(imgs)
+    return sorted(imgs, key=lambda i: try_parse_disto_name_from_url(i))
