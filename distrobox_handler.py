@@ -157,8 +157,6 @@ def create_box(box_name: str, image: str):
 
     subprocess.run([*FLATPAK_SPAWN_ARR, *cmd.split(" ")])
 
-    init_new_box(box_name)
-
 
 def init_new_box(box_name: str):
     run_command_and_get_output(f"setsid distrobox enter {box_name} -- ls".split(" "))
