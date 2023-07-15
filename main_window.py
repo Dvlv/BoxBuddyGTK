@@ -232,7 +232,9 @@ class MainWindow(Gtk.ApplicationWindow):
         new_box_popup.present()
 
     def on_create_box_submit(self, box_name: str, selected_image, new_box_popup):
-        image = selected_image.get_string()
+        image = selected_image.get_string().split(" ")[-1]
+        new_box_popup.set_child(Gtk.Spinner())
+
         create_box(box_name, image)
 
         new_box_popup.destroy()
