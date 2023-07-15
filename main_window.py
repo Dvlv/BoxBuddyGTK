@@ -215,7 +215,9 @@ class MainWindow(Gtk.ApplicationWindow):
         create_btn.connect(
             "clicked",
             lambda s: self.on_create_box_submit(
-                name_entry_row.get_text(), image_select.get_selected_item()
+                name_entry_row.get_text(),
+                image_select.get_selected_item(),
+                new_box_popup,
             ),
         )
 
@@ -226,10 +228,11 @@ class MainWindow(Gtk.ApplicationWindow):
         new_box_popup.set_child(new_box_popup_main)
         new_box_popup.present()
 
-    def on_create_box_submit(self, box_name: str, selected_image):
-        print(selected_image)
-        image = selected_image
+    def on_create_box_submit(self, box_name: str, selected_image, new_box_popup):
+        image = selected_image.get_string()
         create_box(box_name, image)
+        new_box_popup.destroy()
+        self.delayed_rerender()
 
     def delayed_rerender(self):
-        pass
+        self.load_boxes()

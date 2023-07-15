@@ -174,3 +174,23 @@ def get_available_images():
                 imgs.append(line)
 
     return sorted(imgs, key=lambda i: try_parse_disto_name_from_url(i))
+
+
+def get_available_images_with_distro_name():
+    out, err = run_command_and_get_output("distrobox create -C".split(" "))
+
+    imgs = []
+    if out:
+        out_lines = out.split("\n")
+        for line in out_lines:
+            if line and line != "Images":
+                pretty_line = line
+                distro = try_parse_disto_name_from_url(line)
+                if distro != "zunknown":
+                    pretty_line = distro.title() + " - " + line
+                else:
+                    pretty_line = "Unknown - " + line
+
+                imgs.append(pretty_line)
+
+    return sorted(imgs)
