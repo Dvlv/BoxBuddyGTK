@@ -6,6 +6,7 @@ from functools import partial
 
 from distrobox_handler import (
     Distrobox,
+    create_box,
     get_available_images,
     open_terminal_in_box,
     upgrade_box,
@@ -169,9 +170,13 @@ class MainWindow(Gtk.ApplicationWindow):
         create_btn = Gtk.Button(label="Create")
         create_btn.add_css_class("suggested-action")
 
+        cancel_btn = Gtk.Button(label="Cancel")
+        cancel_btn.connect("clicked", lambda s: new_box_popup.destroy())
+
         new_box_titlebar = Adw.HeaderBar()
         new_box_titlebar.set_title_widget(title_lbl)
-        new_box_titlebar.pack_start(create_btn)
+        new_box_titlebar.pack_end(create_btn)
+        new_box_titlebar.pack_start(cancel_btn)
 
         new_box_popup.set_titlebar(new_box_titlebar)
 
@@ -206,12 +211,25 @@ class MainWindow(Gtk.ApplicationWindow):
         image_select_row.set_activatable_widget(image_select)
         image_select_row.add_suffix(image_select)
 
+        # do this down here cos the entry row needs to exist
+        create_btn.connect(
+            "clicked",
+            lambda s: self.on_create_box_submit(
+                name_entry_row.get_text(), image_select.get_selected_item()
+            ),
+        )
+
         boxed_list.append(name_entry_row)
         boxed_list.append(image_select_row)
 
         new_box_popup_main.append(boxed_list)
         new_box_popup.set_child(new_box_popup_main)
         new_box_popup.present()
+
+    def on_create_box_submit(self, box_name: str, selected_image):
+        print(selected_image)
+        image = selected_image
+        create_box(box_name, image)
 
     def delayed_rerender(self):
         pass
