@@ -28,7 +28,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
         self.toast_overlay = Adw.ToastOverlay()
         self.main_box = Gtk.Box(
-            hexpand_set=True, hexpand=True, orientation=Gtk.Orientation.HORIZONTAL
+            hexpand_set=True, hexpand=True, orientation=Gtk.Orientation.VERTICAL
         )
         self.toast_overlay.set_child(self.main_box)
 
@@ -65,6 +65,9 @@ class MainWindow(Gtk.ApplicationWindow):
 
         boxes = get_all_distroboxes()
 
+        if len(boxes) == 0:
+            return self.render_no_boxes_message()
+
         tabs = Gtk.Notebook()
         tabs.set_tab_pos(Gtk.PositionType.LEFT)
         tabs.set_hexpand(True)
@@ -92,6 +95,21 @@ class MainWindow(Gtk.ApplicationWindow):
             self.main_box.remove(child)
 
         self.main_box.append(tabs)
+
+    def render_no_boxes_message(self):
+        while child := self.main_box.get_first_child():
+            self.main_box.remove(child)
+
+        no_boxes_msg = Gtk.Label(label="No Boxes")
+        no_boxes_msg_2 = Gtk.Label(
+            label="Click the + at the top-left to create your first box!"
+        )
+
+        no_boxes_msg.add_css_class("title-1")
+        no_boxes_msg_2.add_css_class("title-2")
+
+        self.main_box.append(no_boxes_msg)
+        self.main_box.append(no_boxes_msg_2)
 
     def make_box_tab(self, box: Distrobox) -> Gtk.Box:
         """
@@ -252,7 +270,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
         new_box_popup.destroy()
 
-        toast = Adw.Toast.new("Box Deleted!")
+        toast = Adw.Toast.new("Box Created!")
         self.toast_overlay.add_toast(toast)
 
         self.delayed_rerender()
@@ -261,6 +279,9 @@ class MainWindow(Gtk.ApplicationWindow):
         delete_box(box_name)
 
         GLib.timeout_add_seconds(1, self.delayed_rerender)
+
+        toast = Adw.Toast.new("Box Deleted!")
+        self.toast_overlay.add_toast(toast)
 
     def delayed_rerender(self):
         self.load_boxes()
