@@ -155,7 +155,7 @@ def delete_box(box_name: str):
 def create_box(box_name: str, image: str):
     cmd = f"distrobox create -i {image} -Y -n {box_name}"
 
-    subprocess.run([*FLATPAK_SPAWN_ARR, *cmd.split(" ")])
+    run_command_and_get_output(cmd.split(" "))
 
 
 def init_new_box(box_name: str):

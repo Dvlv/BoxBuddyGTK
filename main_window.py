@@ -7,6 +7,7 @@ from functools import partial
 from distrobox_handler import (
     Distrobox,
     create_box,
+    delete_box,
     get_available_images_with_distro_name,
     open_terminal_in_box,
     upgrade_box,
@@ -135,10 +136,22 @@ class MainWindow(Gtk.ApplicationWindow):
         upgrade_box_row.add_suffix(upgrade_box_btn)
         upgrade_box_row.set_activatable_widget(upgrade_box_btn)
 
+        # Delete
+        delete_box_btn = Gtk.Button()
+        delete_box_btn.set_icon_name("user-trash-symbolic")
+        delete_box_btn.connect("clicked", partial(self.delete_box, box.name))
+        delete_box_btn.add_css_class("flat")
+
+        delete_box_row = Adw.ActionRow()
+        delete_box_row.set_title("Delete Box")
+        delete_box_row.add_suffix(delete_box_btn)
+        delete_box_row.set_activatable_widget(delete_box_btn)
+
         # Put all into list
         boxed_list.append(name_entry_row)
         boxed_list.append(open_terminal_row)
         boxed_list.append(upgrade_box_row)
+        boxed_list.append(delete_box_row)
 
         # put list into page
         vbox.append(page_title)
@@ -238,6 +251,11 @@ class MainWindow(Gtk.ApplicationWindow):
         new_box_popup.destroy()
 
         self.delayed_rerender()
+
+    def delete_box(self, box_name: str):
+        delete_box(box_name)
+
+        GLib.timeout_add_seconds(1, self.delayed_rerender)
 
     def delayed_rerender(self):
         self.load_boxes()
