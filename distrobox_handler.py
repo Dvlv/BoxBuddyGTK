@@ -124,7 +124,7 @@ def open_terminal_in_box(box_name: str):
     )
 
 
-def run_command_in_box(command: str, box_name: str):
+def run_command_in_box(command: str, box_name: str, *args):
     cmd = [
         *FLATPAK_SPAWN_ARR,
         "distrobox",
