@@ -84,7 +84,7 @@ class MainWindow(Gtk.ApplicationWindow):
             tab.set_vexpand(True)
 
             tab_title = Gtk.Grid()
-            tab_title.set_column_spacing(0)
+            tab_title.set_column_spacing(5)
 
             tab_title_label = Gtk.Label(label=box.name)
 
@@ -126,8 +126,16 @@ class MainWindow(Gtk.ApplicationWindow):
         vbox.set_margin_start(10)
         vbox.set_margin_end(10)
 
-        page_title = Gtk.Label(label=f"Manage {box.name}")
+        # title
+        page_img = Gtk.Image.new_from_file(get_distro_img(box.distro))
+        page_title = Gtk.Label(label=f"{box.name}")
         page_title.add_css_class("title-1")
+
+        title_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        title_box.append(page_img)
+        title_box.append(page_title)
+
+        # List View
 
         boxed_list = Gtk.ListBox()
         boxed_list.add_css_class("boxed-list")
@@ -179,14 +187,13 @@ class MainWindow(Gtk.ApplicationWindow):
         delete_box_row.set_activatable_widget(delete_box_btn)
 
         # Put all into list
-        boxed_list.append(name_entry_row)
         boxed_list.append(open_terminal_row)
         boxed_list.append(upgrade_box_row)
         boxed_list.append(show_box_applications_row)
         boxed_list.append(delete_box_row)
 
         # put list into page
-        vbox.append(page_title)
+        vbox.append(title_box)
         vbox.append(Gtk.Separator())
         vbox.append(boxed_list)
 

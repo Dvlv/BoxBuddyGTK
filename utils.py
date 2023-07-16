@@ -37,11 +37,11 @@ def get_imgs_dir() -> str:
     """
     Returns local imgs dir if local, else XDG_DATA
     """
-    imgs_dir = os.path.join(os.path.abspath(__file__), "data")
+    imgs_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
     if is_flatpak():
         imgs_dir = os.getenv("XDG_DATA_HOME")
 
-    return imgs_dir
+    return os.path.join(imgs_dir, "imgs")
 
 
 def get_distro_img(distro: str):
