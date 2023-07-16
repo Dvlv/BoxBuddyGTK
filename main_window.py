@@ -17,7 +17,7 @@ from distrobox_handler import (
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import GObject, Gtk, Gio, GLib, Adw
+from gi.repository import GObject, Gtk, Gio, GLib, Adw, GdkPixbuf
 
 
 class MainWindow(Gtk.ApplicationWindow):
@@ -347,7 +347,20 @@ class MainWindow(Gtk.ApplicationWindow):
             app_row = Adw.ActionRow()
             app_row.set_title(app.name)
 
-            img = Gtk.Image.new_from_icon_name(app.icon)
+            set_from_pb = False
+            img = Gtk.Image()
+            thm = Gtk.IconTheme()
+            info = thm.lookup_icon(app.icon)
+            if info:
+                fn = info.get_filename()
+                if fn:
+                    pb = GdkPixbuf.Pixbuf.new_from_file_at_scale(fn, 16, 16, True)
+                    img.set_from_pixbuf(pb)
+                    set_from_pb = True
+
+            if not set_from_pb:
+                img.set_from_icon_name(app.icon)
+
             app_row.add_prefix(img)
 
             btn = Gtk.Button(label="Add To Menu")
