@@ -1,3 +1,5 @@
+import shutil
+import os
 import subprocess
 from dataclasses import dataclass
 from typing import Tuple, List
@@ -135,12 +137,27 @@ def run_command_in_box(command: str, box_name: str):
     return run_command_and_get_output(cmd)
 
 
-def get_apps_in_box(box_name: str) -> list[LocalApp]:
-    list_local_script = ""
-    with open("boxbuddy-list-local-apps.sh", "r") as script:
-        list_local_script = script.read()
+def create_list_local_script_if_not_exists():
+    script_dir = os.path.join(
+        os.path.abspath(os.path.dirname(__file__)), "boxbuddy-list-local-apps.sh"
+    )
 
-    out, err = run_command_in_box(list_local_script, box_name)
+    if is_flatpak():
+        data_path = os.getenv("XDG_DATA_HOME")
+
+        fp_script_path = os.path.join(data_path, "boxbuddy-list-local-apps.sh")
+        shutil.copyfile(script_dir, fp_script_path)
+        os.chmod(fp_script_path, 0o0744)
+
+        script_dir = fp_script_path
+
+    return script_dir
+
+
+def get_apps_in_box(box_name: str) -> list[LocalApp]:
+    script_path = create_list_local_script_if_not_exists()
+
+    out, err = run_command_in_box(script_path, box_name)
 
     if not out:
         return []
