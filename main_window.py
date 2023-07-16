@@ -10,6 +10,7 @@ from distrobox_handler import (
     create_box,
     delete_box,
     get_apps_in_box,
+    export_app_from_box,
     get_available_images_with_distro_name,
     open_terminal_in_box,
     upgrade_box,
@@ -335,11 +336,11 @@ class MainWindow(Gtk.ApplicationWindow):
 
         def bg_func():
             local_apps = get_apps_in_box(box_name)
-            GObject.idle_add(self.on_list_local_apps_called, local_apps)
+            GObject.idle_add(self.on_list_local_apps_called, local_apps, box_name)
 
         Thread(target=bg_func).start()
 
-    def on_list_local_apps_called(self, local_apps):
+    def on_list_local_apps_called(self, local_apps, box_name):
         boxed_list = Gtk.ListBox()
         boxed_list.add_css_class("boxed-list")
 
@@ -347,34 +348,25 @@ class MainWindow(Gtk.ApplicationWindow):
             app_row = Adw.ActionRow()
             app_row.set_title(app.name)
 
-            set_from_pb = False
-            img = Gtk.Image()
-            thm = Gtk.IconTheme()
-            info = thm.lookup_icon(
-                app.icon,
-                None,
-                16,
-                1,
-                Gtk.TextDirection.LTR,
-                Gtk.IconLookupFlags.FORCE_SYMBOLIC,
-            )
-            if info:
-                img.set_from_paintable(info)
-                set_from_pb = True
-
-            if not set_from_pb:
-                img.set_from_icon_name(app.icon)
-
-            app_row.add_prefix(img)
+            img = Gtk.Image.new_from_icon_name(app.icon)
 
             btn = Gtk.Button(label="Add To Menu")
-            btn.add_css_class("suggested-action")
+            btn.add_css_class("pill small sm")
+            btn.connect("clicked", partial(self.add_app_to_menu, box_name, app.name))
+
+            app_row.add_prefix(img)
             app_row.add_suffix(btn)
 
             boxed_list.append(app_row)
 
         self.show_apps_spinner.stop()
         self.show_apps_main_box.append(boxed_list)
+
+    def add_app_to_menu(self, box_name: str, app_name: str):
+        export_app_from_box(box_name, app_name)
+
+        toast = Adw.Toast.new("App Exported!")
+        self.toast_overlay.add_toast(toast)
 
     def delayed_rerender(self):
         self.load_boxes()
