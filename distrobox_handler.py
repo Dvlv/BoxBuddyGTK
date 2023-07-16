@@ -177,7 +177,7 @@ def get_apps_in_box(box_name: str) -> list[LocalApp]:
             continue
 
         ex = parts[3]
-        ex = ex.replace(" %U", "")
+        ex = ex.replace(" %U", "").replace(" %F", "")
 
         app = LocalApp(
             name=parts[2].strip(),

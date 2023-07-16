@@ -132,6 +132,9 @@ class MainWindow(Gtk.ApplicationWindow):
         page_title.add_css_class("title-1")
 
         title_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+        title_box.set_spacing(10)
+        title_box.set_margin_start(10)
+
         title_box.append(page_img)
         title_box.append(page_title)
 
