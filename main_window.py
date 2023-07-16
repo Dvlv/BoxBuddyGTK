@@ -344,8 +344,17 @@ class MainWindow(Gtk.ApplicationWindow):
         boxed_list.add_css_class("boxed-list")
 
         for app in local_apps:
-            lbl = Gtk.Label(label=app.name)
-            boxed_list.append(lbl)
+            app_row = Adw.ActionRow()
+            app_row.set_title(app.name)
+
+            img = Gtk.Image.new_from_icon_name(app.icon)
+            app_row.add_prefix(img)
+
+            btn = Gtk.Button(label="Add To Menu")
+            btn.add_css_class("suggested-action")
+            app_row.add_suffix(btn)
+
+            boxed_list.append(app_row)
 
         self.show_apps_spinner.stop()
         self.show_apps_main_box.append(boxed_list)

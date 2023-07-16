@@ -180,7 +180,7 @@ def get_apps_in_box(box_name: str) -> list[LocalApp]:
         ex = ex.replace(" %U", "")
 
         app = LocalApp(
-            name=pars[2].strip(),
+            name=parts[2].strip(),
             exec_name=ex.strip(),
             icon=parts[1].strip(),
             desktop_file=parts[0].strip(),
