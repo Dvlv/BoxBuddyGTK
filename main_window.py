@@ -323,9 +323,10 @@ class MainWindow(Gtk.ApplicationWindow):
 
         dialogue.present()
 
-    def do_delete_box(self, box_name, response, *args):
-        print(box_name, response, args)
-        # delete_box(box_name)
+    def do_delete_box(self, box_name, dialogue, response_str, *args):
+        if response_str and response_str[0] == "delete":
+            print("deleting")
+            delete_box(box_name)
 
         self.delayed_rerender()
 
