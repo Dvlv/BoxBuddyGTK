@@ -16,6 +16,7 @@ from distrobox_handler import (
     run_command_in_box,
     upgrade_box,
 )
+from utils import get_distro_img
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
@@ -87,8 +88,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
             tab_title_label = Gtk.Label(label=box.name)
 
-            # TODO
-            tab_title_img = Gtk.Image.new_from_icon_name("view-pin-symbolic")
+            tab_title_img = Gtk.Image.new_from_file(get_distro_img(box.distro))
 
             tab_title.attach(tab_title_img, 0, 0, 1, 1)
             tab_title.attach(tab_title_label, 1, 0, 1, 1)
@@ -131,12 +131,6 @@ class MainWindow(Gtk.ApplicationWindow):
 
         boxed_list = Gtk.ListBox()
         boxed_list.add_css_class("boxed-list")
-
-        # Name
-        name_entry_row = Adw.ActionRow()
-        name_entry_row.set_hexpand(True)
-        name_entry_row.set_title("Name")
-        name_entry_row.add_suffix(Gtk.Label(label=box.name))
 
         # Open Terminal
         open_terminal_btn = Gtk.Button()
