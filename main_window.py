@@ -309,6 +309,19 @@ class MainWindow(Gtk.ApplicationWindow):
         self.delayed_rerender()
 
     def delete_box(self, box_name: str, *args):
+        dialogue = Adw.MessageDialog()
+        dialogue.set_title("Really Delete?")
+        dialogue.set_body(f"Are you sure you want to delete {box_name}?")
+        dialogue.add_response("cancel", "Cancel")
+        dialogue.add_response("delete", "Delete")
+        dialogue.set_default_response("cancel")
+        dialogue.set_close_response("cancel")
+        dialogue.set_response_appearance("delete", Adw.ResponseAppearance.DESTRUCTIVE)
+
+        dialogue.connect("response", partial(self.do_delete_box, box_name))
+
+    def do_delete_box(self, box_name, response, *args):
+        print(response)
         delete_box(box_name)
 
         self.delayed_rerender()
@@ -325,8 +338,15 @@ class MainWindow(Gtk.ApplicationWindow):
         show_apps_main = Gtk.ScrolledWindow()
         self.show_apps_main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
+        self.show_apps_main_box.set_spacing(10)
+        self.show_apps_main_box.set_margin_top(10)
+        self.show_apps_main_box.set_margin_bottom(10)
+        self.show_apps_main_box.set_margin_start(10)
+        self.show_apps_main_box.set_margin_end(10)
+
         self.show_apps_spinner = Gtk.Spinner()
         self.show_apps_success_label = Gtk.Label(label="Loading, Please Wait...")
+        self.show_apps_success_label.add_css_class("title-2")
 
         self.show_apps_main_box.append(self.show_apps_success_label)
         self.show_apps_main_box.append(self.show_apps_spinner)
