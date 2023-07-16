@@ -350,7 +350,14 @@ class MainWindow(Gtk.ApplicationWindow):
             set_from_pb = False
             img = Gtk.Image()
             thm = Gtk.IconTheme()
-            info = thm.lookup_icon(app.icon)
+            info = thm.lookup_icon(
+                app.icon,
+                None,
+                16,
+                1,
+                Gtk.TextDirection.LTR,
+                Gtk.IconLookupFlags.FORCE_SYMBOLIC,
+            )
             if info:
                 fn = info.get_filename()
                 if fn:
