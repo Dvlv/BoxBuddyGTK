@@ -326,6 +326,9 @@ class MainWindow(Gtk.ApplicationWindow):
         self.show_apps_main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
         self.show_apps_spinner = Gtk.Spinner()
+        self.show_apps_success_label = Gtk.Label(label="Loading, Please Wait...")
+
+        self.show_apps_main_box.append(self.show_apps_success_label)
         self.show_apps_main_box.append(self.show_apps_spinner)
 
         show_apps_main.set_child(self.show_apps_main_box)
@@ -341,6 +344,8 @@ class MainWindow(Gtk.ApplicationWindow):
         Thread(target=bg_func).start()
 
     def on_list_local_apps_called(self, local_apps, box_name):
+        self.show_apps_success_label.hide()
+
         boxed_list = Gtk.ListBox()
         boxed_list.add_css_class("boxed-list")
 
@@ -367,8 +372,10 @@ class MainWindow(Gtk.ApplicationWindow):
     def add_app_to_menu(self, box_name: str, app_name: str, *args):
         export_app_from_box(box_name, app_name)
 
-        toast = Adw.Toast.new("App Exported!")
-        self.toast_overlay.add_toast(toast)
+        self.show_apps_success_label.set_label(f"{app_name} added to menu!")
+        self.show_apps_success_label.show()
+
+        GLib.timeout_add_seconds(2, self.show_apps_success_label.hide)
 
     def delayed_rerender(self):
         self.load_boxes()
