@@ -317,12 +317,15 @@ class MainWindow(Gtk.ApplicationWindow):
         dialogue.set_default_response("cancel")
         dialogue.set_close_response("cancel")
         dialogue.set_response_appearance("delete", Adw.ResponseAppearance.DESTRUCTIVE)
+        dialogue.set_transient_for(self)
 
         dialogue.connect("response", partial(self.do_delete_box, box_name))
 
+        dialogue.present()
+
     def do_delete_box(self, box_name, response, *args):
-        print(response)
-        delete_box(box_name)
+        print(box_name, response, args)
+        # delete_box(box_name)
 
         self.delayed_rerender()
 
