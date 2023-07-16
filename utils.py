@@ -4,6 +4,7 @@ import subprocess
 
 def run_command_and_get_output(command: list[str]) -> tuple[str, str]:
     output = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    print("running", command)
 
     return output.stdout.decode("utf-8"), output.stderr.decode("utf-8")
 

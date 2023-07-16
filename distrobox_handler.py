@@ -136,7 +136,11 @@ def run_command_in_box(command: str, box_name: str):
 
 
 def get_apps_in_box(box_name: str) -> list[LocalApp]:
-    out, err = run_command_in_box(f"boxbuddy-list-local-apps.sh", box_name)
+    list_local_script = ""
+    with open("boxbuddy-list-local-apps.sh", "r") as script:
+        list_local_script = script.read()
+
+    out, err = run_command_in_box(list_local_script, box_name)
 
     if not out:
         return []
