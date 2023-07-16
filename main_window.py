@@ -352,7 +352,9 @@ class MainWindow(Gtk.ApplicationWindow):
 
             btn = Gtk.Button(label="Add To Menu")
             btn.add_css_class("pill small sm")
-            btn.connect("clicked", partial(self.add_app_to_menu, box_name, app.name))
+            btn.connect(
+                "clicked", partial(self.add_app_to_menu, box_name, app.desktop_file)
+            )
 
             app_row.add_prefix(img)
             app_row.add_suffix(btn)
@@ -362,7 +364,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.show_apps_spinner.stop()
         self.show_apps_main_box.append(boxed_list)
 
-    def add_app_to_menu(self, box_name: str, app_name: str):
+    def add_app_to_menu(self, box_name: str, app_name: str, *args):
         export_app_from_box(box_name, app_name)
 
         toast = Adw.Toast.new("App Exported!")

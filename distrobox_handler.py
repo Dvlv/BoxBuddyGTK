@@ -191,7 +191,7 @@ def get_apps_in_box(box_name: str) -> list[LocalApp]:
 
 
 def export_app_from_box(box_name: str, app: str):
-    cmd = f"distrobox export -a {app}"
+    cmd = f"distrobox-export -a {app}"
 
     return run_command_in_box(cmd, box_name)
 
