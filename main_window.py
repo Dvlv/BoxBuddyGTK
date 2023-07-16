@@ -9,6 +9,7 @@ from distrobox_handler import (
     Distrobox,
     create_box,
     delete_box,
+    get_apps_in_box,
     get_available_images_with_distro_name,
     open_terminal_in_box,
     upgrade_box,
@@ -129,11 +130,11 @@ class MainWindow(Gtk.ApplicationWindow):
         boxed_list = Gtk.ListBox()
         boxed_list.add_css_class("boxed-list")
 
-        # Edit Name
-        name_entry_row = Adw.EntryRow()
+        # Name
+        name_entry_row = Adw.ActionRow()
         name_entry_row.set_hexpand(True)
         name_entry_row.set_title("Name")
-        name_entry_row.set_text(box.name)
+        name_entry_row.add_suffix(Gtk.Label(label=box.name))
 
         # Open Terminal
         open_terminal_btn = Gtk.Button()
@@ -156,6 +157,19 @@ class MainWindow(Gtk.ApplicationWindow):
         upgrade_box_row.set_title("Upgrade Box")
         upgrade_box_row.add_suffix(upgrade_box_btn)
         upgrade_box_row.set_activatable_widget(upgrade_box_btn)
+
+        # Show Applications
+        show_box_applications_btn = Gtk.Button()
+        show_box_applications_btn.set_icon_name("application-x-executable-symbolic")
+        show_box_applications_btn.connect(
+            "clicked", partial(self.show_box_applications, box.name)
+        )
+        show_box_applications_btn.add_css_class("flat")
+
+        show_box_applications_row = Adw.ActionRow()
+        show_box_applications_row.set_title("View Applications")
+        show_box_applications_row.add_suffix(show_box_applications_btn)
+        show_box_applications_row.set_activatable_widget(show_box_applications_btn)
 
         # Delete
         delete_box_btn = Gtk.Button()
@@ -299,6 +313,41 @@ class MainWindow(Gtk.ApplicationWindow):
 
         toast = Adw.Toast.new("Box Deleted!")
         self.toast_overlay.add_toast(toast)
+
+    def show_box_applications(self, box_name: str, *args):
+        self.show_apps_popup = Gtk.Window()
+        self.show_apps_popup.set_transient_for(self)
+        self.show_apps_popup.set_default_size(700, 350)
+        self.show_apps_popup.set_modal(True)
+
+        show_apps_main = Gtk.ScrolledWindow()
+        self.show_apps_main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+
+        self.show_apps_spinner = Gtk.Spinner()
+        self.show_apps_main_box.append(self.show_apps_spinner)
+
+        show_apps_main.set_child(self.show_apps_main_box)
+        self.show_apps_popup.set_child(show_apps_main)
+
+        self.show_apps_popup.present()
+        self.show_apps_spinner.start()
+
+        def bg_func():
+            local_apps = get_apps_in_box(box_name)
+            GObject.idle_add(self.on_list_local_apps_called, local_apps)
+
+        Thread(target=bg_func).start()
+
+    def on_list_local_apps_called(self, local_apps):
+        boxed_list = Gtk.ListBox()
+        boxed_list.add_css_class("boxed-list")
+
+        for app in local_apps:
+            lbl = Gtk.Label(label=app.name)
+            boxed_list.append(lbl)
+
+        self.show_apps_spinner.stop()
+        self.show_apps_main_box.append(boxed_list)
 
     def delayed_rerender(self):
         self.load_boxes()

@@ -21,6 +21,14 @@ class Distrobox:
     status: str
 
 
+@dataclass
+class LocalApp:
+    name: str
+    exec_name: str
+    icon: str
+    desktop_file: str
+
+
 def get_all_distroboxes() -> List[Distrobox]:
     """
     Fetches all distroboxes
@@ -125,6 +133,40 @@ def run_command_in_box(command: str, box_name: str):
     ]
 
     return run_command_and_get_output(cmd)
+
+
+def get_apps_in_box(box_name: str) -> list[LocalApp]:
+    out, err = run_command_in_box(f"boxbuddy-list-local-apps.sh", box_name)
+
+    if not out:
+        return []
+
+    local_apps = []
+
+    desktop_files = out.split("\n")
+    if len(desktop_files) == 1 and "No such file" in desktop_files[0]:
+        return []
+
+    for file in desktop_files:
+        if ";" not in file:
+            continue
+
+        parts = file.split(";")
+        if len(parts) != 4:
+            continue
+
+        ex = parts[3]
+        ex = ex.replace(" %U", "")
+
+        app = LocalApp(
+            name=pars[2].strip(),
+            exec_name=ex.strip(),
+            icon=parts[1].strip(),
+            desktop_file=parts[0].strip(),
+        )
+        local_apps.append(app)
+
+    return local_apps
 
 
 def export_app_from_box(box_name: str, app: str):
