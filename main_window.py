@@ -16,7 +16,7 @@ from distrobox_handler import (
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
-from gi.repository import Gtk, Gio, GLib, Adw
+from gi.repository import GObject, Gtk, Gio, GLib, Adw
 
 
 class MainWindow(Gtk.ApplicationWindow):
@@ -278,7 +278,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
         def bg_func():
             create_box(box_name, image)
-            self.on_create_box_finish()
+            GObject.idle_add(self.on_create_box_finish)
 
         self.create_spinner.start()
         Thread(target=bg_func).start()
