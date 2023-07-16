@@ -3,7 +3,7 @@ import subprocess
 import gi
 
 from functools import partial
-from background_worker import BackgroundWorker
+from threading import Thread
 
 from distrobox_handler import (
     Distrobox,
@@ -275,10 +275,13 @@ class MainWindow(Gtk.ApplicationWindow):
         box_name = box_name.replace(" ", "-")
 
         image = selected_image.get_string().split(" ")[-1]
-        bg_func = partial(create_box, box_name, image)
-        bg_worker = BackgroundWorker(bg_func, self.on_create_box_finish)
-        bg_worker.start()
+
+        def bg_func():
+            create_box(box_name, image)
+            self.on_create_box_finish()
+
         self.create_spinner.start()
+        Thread(target=bg_func).start()
 
     def on_create_box_finish(self):
         self.new_box_popup.destroy()
