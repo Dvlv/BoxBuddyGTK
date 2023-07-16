@@ -13,6 +13,7 @@ from distrobox_handler import (
     export_app_from_box,
     get_available_images_with_distro_name,
     open_terminal_in_box,
+    run_command_in_box,
     upgrade_box,
 )
 
@@ -324,14 +325,13 @@ class MainWindow(Gtk.ApplicationWindow):
         dialogue.present()
 
     def do_delete_box(self, box_name, dialogue, response_str, *args):
-        if response_str and response_str[0] == "delete":
-            print("deleting")
+        if response_str and response_str == "delete":
             delete_box(box_name)
 
-        self.delayed_rerender()
+            self.delayed_rerender()
 
-        toast = Adw.Toast.new("Box Deleted!")
-        self.toast_overlay.add_toast(toast)
+            toast = Adw.Toast.new("Box Deleted!")
+            self.toast_overlay.add_toast(toast)
 
     def show_box_applications(self, box_name: str, *args):
         self.show_apps_popup = Gtk.Window()
@@ -370,6 +370,14 @@ class MainWindow(Gtk.ApplicationWindow):
     def on_list_local_apps_called(self, local_apps, box_name):
         self.show_apps_success_label.hide()
 
+        if not len(local_apps):
+            no_apps_lbl = Gtk.Label(label="No Apps Installed")
+            no_apps_lbl.add_css_class("title-2")
+            self.show_apps_spinner.stop()
+            self.show_apps_main_box.append(no_apps_lbl)
+
+            return
+
         boxed_list = Gtk.ListBox()
         boxed_list.add_css_class("boxed-list")
 
@@ -379,14 +387,27 @@ class MainWindow(Gtk.ApplicationWindow):
 
             img = Gtk.Image.new_from_icon_name(app.icon)
 
-            btn = Gtk.Button(label="Add To Menu")
-            btn.add_css_class("pill small sm")
-            btn.connect(
+            add_menu_btn = Gtk.Button(label="Add To Menu")
+            add_menu_btn.add_css_class("pill small sm")
+            add_menu_btn.connect(
                 "clicked", partial(self.add_app_to_menu, box_name, app.desktop_file)
             )
 
+            run_btn = Gtk.Button(label="Run")
+            run_btn.add_css_class("pill small sm")
+            run_btn.connect(
+                "clicked",
+                partial(
+                    run_command_in_box,
+                    app.exec_name,
+                    box_name,
+                ),
+            )
+
             app_row.add_prefix(img)
-            app_row.add_suffix(btn)
+            app_row.add_suffix(run_btn)
+            app_row.add_suffix(Gtk.Separator())
+            app_row.add_suffix(add_menu_btn)
 
             boxed_list.append(app_row)
 
