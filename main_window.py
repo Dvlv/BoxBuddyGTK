@@ -186,6 +186,7 @@ class MainWindow(Gtk.ApplicationWindow):
         boxed_list.append(name_entry_row)
         boxed_list.append(open_terminal_row)
         boxed_list.append(upgrade_box_row)
+        boxed_list.append(show_box_applications_row)
         boxed_list.append(delete_box_row)
 
         # put list into page
