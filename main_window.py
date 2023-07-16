@@ -3,6 +3,7 @@ import subprocess
 import gi
 
 from functools import partial
+from background_worker import BackgroundWorker
 
 from distrobox_handler import (
     Distrobox,
@@ -195,10 +196,10 @@ class MainWindow(Gtk.ApplicationWindow):
         upgrade_box(box_name)
 
     def create_box(self, *args):
-        new_box_popup = Gtk.Window()
-        new_box_popup.set_transient_for(self)
-        new_box_popup.set_default_size(700, 350)
-        new_box_popup.set_modal(True)
+        self.new_box_popup = Gtk.Window()
+        self.new_box_popup.set_transient_for(self)
+        self.new_box_popup.set_default_size(700, 350)
+        self.new_box_popup.set_modal(True)
 
         title_lbl = Gtk.Label(label="Create A Distrobox")
         title_lbl.add_css_class("header")
@@ -207,14 +208,14 @@ class MainWindow(Gtk.ApplicationWindow):
         create_btn.add_css_class("suggested-action")
 
         cancel_btn = Gtk.Button(label="Cancel")
-        cancel_btn.connect("clicked", lambda s: new_box_popup.destroy())
+        cancel_btn.connect("clicked", lambda s: self.new_box_popup.destroy())
 
         new_box_titlebar = Adw.HeaderBar()
         new_box_titlebar.set_title_widget(title_lbl)
         new_box_titlebar.pack_end(create_btn)
         new_box_titlebar.pack_start(cancel_btn)
 
-        new_box_popup.set_titlebar(new_box_titlebar)
+        self.new_box_popup.set_titlebar(new_box_titlebar)
 
         new_box_popup_main = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
 
@@ -253,7 +254,6 @@ class MainWindow(Gtk.ApplicationWindow):
             lambda s: self.on_create_box_submit(
                 name_entry_row.get_text(),
                 image_select.get_selected_item(),
-                new_box_popup,
             ),
         )
 
@@ -261,22 +261,31 @@ class MainWindow(Gtk.ApplicationWindow):
         boxed_list.append(image_select_row)
 
         new_box_popup_main.append(boxed_list)
-        new_box_popup.set_child(new_box_popup_main)
-        new_box_popup.present()
 
-    def on_create_box_submit(self, box_name: str, selected_image, new_box_popup):
+        self.create_spinner = Gtk.Spinner()
+        new_box_popup_main.append(self.create_spinner)
+
+        self.new_box_popup.set_child(new_box_popup_main)
+        self.new_box_popup.present()
+
+    def on_create_box_submit(self, box_name: str, selected_image):
         if not box_name:
             return
 
         box_name = box_name.replace(" ", "-")
 
         image = selected_image.get_string().split(" ")[-1]
-        create_box(box_name, image)
+        bg_func = partial(create_box, box_name, image)
+        bg_worker = BackgroundWorker(bg_func, self.on_create_box_finish)
+        bg_worker.start()
+        self.create_spinner.start()
 
-        new_box_popup.destroy()
+    def on_create_box_finish(self):
+        self.new_box_popup.destroy()
 
         toast = Adw.Toast.new("Box Created!")
         self.toast_overlay.add_toast(toast)
+        self.create_spinner.stop()
 
         self.delayed_rerender()
 
