@@ -359,11 +359,8 @@ class MainWindow(Gtk.ApplicationWindow):
                 Gtk.IconLookupFlags.FORCE_SYMBOLIC,
             )
             if info:
-                fn = info.get_filename()
-                if fn:
-                    pb = GdkPixbuf.Pixbuf.new_from_file_at_scale(fn, 16, 16, True)
-                    img.set_from_pixbuf(pb)
-                    set_from_pb = True
+                img.set_from_paintable(info)
+                set_from_pb = True
 
             if not set_from_pb:
                 img.set_from_icon_name(app.icon)
