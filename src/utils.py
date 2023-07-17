@@ -70,7 +70,7 @@ def has_distrobox_installed() -> bool:
     """
     cmd = ["which", "distrobox"]
     if is_flatpak():
-        cmd = ["flatpak", "spawn", "--host", "which", "distrobox"]
+        cmd = ["flatpak-spawn", "--host", "which", "distrobox"]
 
     out, err = run_command_and_get_output(cmd)
 

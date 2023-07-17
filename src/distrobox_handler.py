@@ -9,10 +9,6 @@ from utils import detect_terminal, is_flatpak, run_command_and_get_output
 FLATPAK_SPAWN = "flatpak-spawn --host " if is_flatpak() else ""
 FLATPAK_SPAWN_ARR = ["flatpak-spawn", "--host"] if is_flatpak() else []
 
-fp_spawn = []
-if is_flatpak():
-    fp_spawn = ["flatpak", "spawn", "--host"]
-
 
 @dataclass
 class Distrobox:
