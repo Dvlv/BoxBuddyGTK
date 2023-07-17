@@ -3,6 +3,12 @@ import subprocess
 
 
 def run_command_and_get_output(command: list[str]) -> tuple[str, str]:
+    if is_flatpak():
+        if command[0] != "flatpak-spawn":
+            from distrobox_handler import FLATPAK_SPAWN_ARR
+
+            command = [*FLATPAK_SPAWN_ARR, *command]
+
     output = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     print("running", command)
 

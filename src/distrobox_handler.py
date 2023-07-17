@@ -247,19 +247,6 @@ def init_new_box(box_name: str):
     run_command_and_get_output(f"setsid distrobox enter {box_name} -- ls".split(" "))
 
 
-def get_available_images():
-    out, err = run_command_and_get_output("distrobox create -C".split(" "))
-
-    imgs = []
-    if out:
-        out_lines = out.split("\n")
-        for line in out_lines:
-            if line != "Images":
-                imgs.append(line)
-
-    return sorted(imgs, key=lambda i: try_parse_disto_name_from_url(i))
-
-
 def get_available_images_with_distro_name():
     out, err = run_command_and_get_output("distrobox create -C".split(" "))
 
