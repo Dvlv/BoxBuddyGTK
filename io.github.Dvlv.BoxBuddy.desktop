@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=BoxBuddy
+Exec=boxbuddy
+Type=Application
+Icon=io.github.Dvlv.BoxBuddy
+Categories=Utility;
+Comment=A Graphical Application For Managing Distroboxes

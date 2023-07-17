@@ -1,0 +1,46 @@
+app-id: co.uk.dvlv.toolbox-gui
+runtime: org.gnome.Platform
+runtime-version: '44'
+sdk: org.gnome.Sdk
+finish-args:
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --filesystem=xdg-data
+  - --talk-name=org.freedesktop.Flatpak
+command: boxbuddy
+modules:
+  - name: runner
+    buildsystem: simple
+    build-commands:
+      - install -D boxbuddy-fp /app/bin/boxbuddy
+      - cp -r src /app/src
+      - mkdir /app/icons
+      - cp icons/io.github.Dvlv.BoxBuddy.svg /app/icons/io.github.Dvlv.BoxBuddy.svg
+
+      - mkdir -p /app/share/applications
+      - install -D io.github.Dvlv.BoxBuddy.desktop /app/share/applications/
+
+      - install -Dp -m 644 io.github.Dvlv.BoxBuddy.metainfo.xml /app/share/metainfo/io.github.Dvlv.BoxBuddy.metainfo.xml
+
+      - mkdir -p /app/share/icons/hicolor/scalable/apps
+      - install -D icons/io.github.Dvlv.BoxBuddy.svg /app/share/icons/hicolor/scalable/apps
+    sources:
+      - type: file
+        path: io.github.Dvlv.BoxBuddy.desktop
+
+      - type: file
+        path: icons/io.github.Dvlv.BoxBuddy.svg
+
+      - type: file
+        path: io.github.Dvlv.BoxBuddy.metainfo.xml
+        
+      - type: file
+        path: boxbuddy-fp
+
+      - type: dir
+        path: icons
+        dest: icons
+
+      - type: dir
+        path: src
+        dest: src

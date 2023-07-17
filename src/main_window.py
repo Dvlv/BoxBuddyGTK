@@ -87,15 +87,15 @@ class MainWindow(Gtk.ApplicationWindow):
             tab.set_hexpand(True)
             tab.set_vexpand(True)
 
-            tab_title = Gtk.Grid()
-            tab_title.set_column_spacing(5)
+            tab_title = Gtk.Box()
+            tab_title.set_spacing(5)
 
             tab_title_label = Gtk.Label(label=box.name)
 
             tab_title_img = Gtk.Image.new_from_file(get_distro_img(box.distro))
 
-            tab_title.attach(tab_title_img, 0, 0, 1, 1)
-            tab_title.attach(tab_title_label, 1, 0, 1, 1)
+            tab_title.append(tab_title_img)
+            tab_title.append(tab_title_label)
 
             tabs.append_page(tab, tab_title)
 
@@ -411,13 +411,13 @@ class MainWindow(Gtk.ApplicationWindow):
             img = Gtk.Image.new_from_icon_name(app.icon)
 
             add_menu_btn = Gtk.Button(label="Add To Menu")
-            add_menu_btn.add_css_class("pill small sm")
+            add_menu_btn.add_css_class("pill")
             add_menu_btn.connect(
                 "clicked", partial(self.add_app_to_menu, box_name, app.desktop_file)
             )
 
             run_btn = Gtk.Button(label="Run")
-            run_btn.add_css_class("pill small sm")
+            run_btn.add_css_class("pill")
             run_btn.connect(
                 "clicked",
                 partial(
