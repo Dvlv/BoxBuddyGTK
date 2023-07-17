@@ -10,7 +10,7 @@ def run_command_and_get_output(command: list[str]) -> tuple[str, str]:
             command = [*FLATPAK_SPAWN_ARR, *command]
 
     output = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    print("running", command)
+    # print("running", command)
 
     return output.stdout.decode("utf-8"), output.stderr.decode("utf-8")
 

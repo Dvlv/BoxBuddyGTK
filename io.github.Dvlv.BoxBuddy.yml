@@ -5,7 +5,6 @@ sdk: org.gnome.Sdk
 finish-args:
   - --socket=wayland
   - --socket=fallback-x11
-  - --socket=session-bus
   - --filesystem=xdg-data
   - --talk-name=org.freedesktop.Flatpak
 command: boxbuddy
