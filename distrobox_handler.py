@@ -48,17 +48,43 @@ def get_all_distroboxes() -> List[Distrobox]:
     if len(out_lines) == 1:
         return []
 
+    # defaults as of 1.4.2.1 in Debian
+    # these are different in 1.5 from git, there
+    # is now a "memory" col which I dont care about
+    name_part = 1
+    image_part = 3
+    id_part = 0
+    status_part = 2
+
+    headings = out.split("\n")[0]
+    headings = headings.split("|")
+    for idx, heading in enumerate(headings):
+        heading = heading.strip()
+        match heading:
+            case "ID":
+                id_part = idx
+            case "NAME":
+                name_part = idx
+            case "STATUS":
+                status_part = idx
+            case "IMAGE":
+                image_part = idx
+            case _:
+                pass
+
     for box_line in out.split("\n")[1:]:
         if box_line:
             fields = box_line.split("|")
             if len(fields) > 3:
                 distroboxes.append(
                     Distrobox(
-                        name=fields[1].strip(),
-                        distro=try_parse_disto_name_from_url(fields[3].strip()),
-                        image_url=fields[3].strip(),
-                        container_id=fields[0].strip(),
-                        status=fields[2].strip(),
+                        name=fields[name_part].strip(),
+                        distro=try_parse_disto_name_from_url(
+                            fields[image_part].strip()
+                        ),
+                        image_url=fields[image_part].strip(),
+                        container_id=fields[id_part].strip(),
+                        status=fields[status_part].strip(),
                     )
                 )
 

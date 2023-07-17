@@ -62,3 +62,24 @@ def get_distro_img(distro: str):
         return img_fullpath
 
     return ""
+
+
+def has_distrobox_installed() -> bool:
+    """
+    Returns whether `which` can find distrobox
+    """
+    cmd = ["which", "distrobox"]
+    if is_flatpak():
+        cmd = ["flatpak", "spawn", "--host", "which", "distrobox"]
+
+    out, err = run_command_and_get_output(cmd)
+
+    # Fedora's behaviour
+    if "no distrobox in" in out or "no distrobox in" in err:
+        return False
+
+    # Debian's behaviour
+    if not out and not err:
+        return False
+
+    return True

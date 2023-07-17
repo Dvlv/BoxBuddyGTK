@@ -16,7 +16,7 @@ from distrobox_handler import (
     run_command_in_box,
     upgrade_box,
 )
-from utils import get_distro_img
+from utils import get_distro_img, has_distrobox_installed
 
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
@@ -68,6 +68,10 @@ class MainWindow(Gtk.ApplicationWindow):
         """
         from distrobox_handler import get_all_distroboxes
 
+        distrobox_installed = has_distrobox_installed()
+        if not distrobox_installed:
+            return self.render_not_installed_message()
+
         boxes = get_all_distroboxes()
 
         if len(boxes) == 0:
@@ -114,6 +118,21 @@ class MainWindow(Gtk.ApplicationWindow):
 
         self.main_box.append(no_boxes_msg)
         self.main_box.append(no_boxes_msg_2)
+
+    def render_not_installed_message(self):
+        while child := self.main_box.get_first_child():
+            self.main_box.remove(child)
+
+        not_installed_msg = Gtk.Label(label="Distrobox not found")
+        not_installed_msg_2 = Gtk.Label(
+            label="Distrobox could not be found, please ensure it is installed."
+        )
+
+        not_installed_msg.add_css_class("title-1")
+        not_installed_msg_2.add_css_class("title-2")
+
+        self.main_box.append(not_installed_msg)
+        self.main_box.append(not_installed_msg_2)
 
     def make_box_tab(self, box: Distrobox) -> Gtk.Box:
         """
