@@ -1,4 +1,4 @@
-app-id: co.uk.dvlv.toolbox-gui
+app-id: io.github.Dvlv.BoxBuddy
 runtime: org.gnome.Platform
 runtime-version: '44'
 sdk: org.gnome.Sdk
