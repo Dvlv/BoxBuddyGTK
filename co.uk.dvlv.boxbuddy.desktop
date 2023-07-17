@@ -2,6 +2,6 @@
 Name=BoxBuddy
 Exec=boxbuddy
 Type=Application
-Icon=io.github.Dvlv.BoxBuddy
+Icon=co.uk.dvlv.boxbuddy
 Categories=Utility;
 Comment=A Graphical Application For Managing Distroboxes

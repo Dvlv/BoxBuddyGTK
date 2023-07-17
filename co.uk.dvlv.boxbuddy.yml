@@ -1,4 +1,4 @@
-app-id: io.github.Dvlv.BoxBuddy
+app-id: co.uk.dvlv.boxbuddy
 runtime: org.gnome.Platform
 runtime-version: '44'
 sdk: org.gnome.Sdk
@@ -15,24 +15,24 @@ modules:
       - install -D boxbuddy-fp /app/bin/boxbuddy
       - cp -r src /app/src
       - mkdir /app/icons
-      - cp icons/io.github.Dvlv.BoxBuddy.svg /app/icons/io.github.Dvlv.BoxBuddy.svg
+      - cp icons/co.uk.dvlv.boxbuddy.svg /app/icons/co.uk.dvlv.boxbuddy.svg
 
       - mkdir -p /app/share/applications
-      - install -D io.github.Dvlv.BoxBuddy.desktop /app/share/applications/
+      - install -D co.uk.dvlv.boxbuddy.desktop /app/share/applications/
 
-      - install -Dp -m 644 io.github.Dvlv.BoxBuddy.metainfo.xml /app/share/metainfo/io.github.Dvlv.BoxBuddy.metainfo.xml
+      - install -Dp -m 644 co.uk.dvlv.boxbuddy.metainfo.xml /app/share/metainfo/co.uk.dvlv.boxbuddy.metainfo.xml
 
       - mkdir -p /app/share/icons/hicolor/scalable/apps
-      - install -D icons/io.github.Dvlv.BoxBuddy.svg /app/share/icons/hicolor/scalable/apps
+      - install -D icons/co.uk.dvlv.boxbuddy.svg /app/share/icons/hicolor/scalable/apps
     sources:
       - type: file
-        path: io.github.Dvlv.BoxBuddy.desktop
+        path: co.uk.dvlv.boxbuddy.desktop
 
       - type: file
-        path: icons/io.github.Dvlv.BoxBuddy.svg
+        path: icons/co.uk.dvlv.boxbuddy.svg
 
       - type: file
-        path: io.github.Dvlv.BoxBuddy.metainfo.xml
+        path: co.uk.dvlv.boxbuddy.metainfo.xml
         
       - type: file
         path: boxbuddy-fp

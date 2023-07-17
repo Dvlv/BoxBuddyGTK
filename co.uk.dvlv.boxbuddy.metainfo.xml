@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2023 Dvlv -->
 <component type="desktop-application">
-  <id>io.github.Dvlv.BoxBuddy</id>
+  <id>co.uk.dvlv.boxbuddy</id>
   <name>BoxBuddy</name>
   <developer_name>Dvlv</developer_name>
-  <launchable type="desktop-id">io.github.Dvlv.BoxBuddy.desktop</launchable>
+  <launchable type="desktop-id">co.uk.dvlv.boxbuddy.desktop</launchable>
   <summary>Graphical Distrobox Manager</summary>
   <description>
     <p>
