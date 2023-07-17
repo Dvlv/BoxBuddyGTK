@@ -30,6 +30,9 @@ def is_flatpak() -> bool:
     if f:
         return True
 
+    if os.path.exists("/.flatpak-info"):
+        return True
+
     return False
 
 
