@@ -3,6 +3,10 @@ Unofficial GUI for managing your Distroboxes. Written with GTK4 + Libadwaita.
 
 Old Qt version available [here](https://github.com/Dvlv/BoxBuddy)
 
+
+![Main Menu](docs/screenshot-1.png)
+
+
 ## Installing
 Flathub soon maybe.
 
