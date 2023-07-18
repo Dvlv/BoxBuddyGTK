@@ -175,7 +175,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
         # Upgrade
         upgrade_box_btn = Gtk.Button()
-        upgrade_box_btn.set_icon_name("system-software-update-symbolic")
+        upgrade_box_btn.set_icon_name("software-update-available-symbolic")
         upgrade_box_btn.connect("clicked", partial(self.upgrade_box, box.name))
         upgrade_box_btn.add_css_class("flat")
 
@@ -361,6 +361,7 @@ class MainWindow(Gtk.ApplicationWindow):
         self.show_apps_popup.set_transient_for(self)
         self.show_apps_popup.set_default_size(700, 350)
         self.show_apps_popup.set_modal(True)
+        self.show_apps_popup.set_title("Installed Applications")
 
         show_apps_main = Gtk.ScrolledWindow()
         self.show_apps_main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
