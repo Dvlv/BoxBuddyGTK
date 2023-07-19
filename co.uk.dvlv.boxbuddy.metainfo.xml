@@ -8,13 +8,26 @@
   <summary>Graphical Distrobox Manager</summary>
   <description>
     <p>
-      A Graphical Application for managing your Distroboxes
+      A Graphical Application for managing your Distroboxes.
     </p>
   </description>
 
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
   <content_rating type="oars-1.1" />
+
+    <screenshots>
+    <screenshot type="default">
+      <caption>The options dialog</caption>
+      <image>https://raw.githubusercontent.com/Dvlv/BoxBuddyGTK/master/docs/screenshot-1.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/Dvlv/BoxBuddyGTK/master/docs/screenshot-2.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/Dvlv/BoxBuddyGTK/master/docs/screenshot-3.png</image>
+    </screenshot>
+  </screenshots>
 
   <url type="homepage">https://github.com/Dvlv/BoxBuddyGTK</url>
 
