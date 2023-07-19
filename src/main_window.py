@@ -149,6 +149,9 @@ class MainWindow(Gtk.ApplicationWindow):
         page_img = Gtk.Image.new_from_file(get_distro_img(box.distro))
         page_title = Gtk.Label(label=f"{box.name}")
         page_title.add_css_class("title-1")
+        page_status = Gtk.Label(label=box.status)
+        page_status.set_halign(Gtk.Align.END)
+        page_status.set_hexpand(True)
 
         title_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         title_box.set_spacing(10)
