@@ -159,6 +159,7 @@ class MainWindow(Gtk.ApplicationWindow):
 
         title_box.append(page_img)
         title_box.append(page_title)
+        title_box.append(page_status)
 
         # List View
 
