@@ -53,12 +53,18 @@ class MainWindow(Gtk.ApplicationWindow):
         add_btn.connect("clicked", self.create_box)
         add_btn.set_tooltip_text("Create A Distrobox")
 
+        about_btn = Gtk.Button()
+        about_btn.set_icon_name("help-about-symbolic")
+        about_btn.connect("clicked", self.show_about_popup)
+        about_btn.set_tooltip_text("About BoxBuddy")
+
         title_lbl = Gtk.Label(label="BoxBuddy")
         title_lbl.add_css_class("header")
 
         self.titlebar = Adw.HeaderBar()
         self.titlebar.set_title_widget(title_lbl)
         self.titlebar.pack_start(add_btn)
+        self.titlebar.pack_end(about_btn)
 
         self.set_titlebar(self.titlebar)
 
@@ -449,6 +455,23 @@ class MainWindow(Gtk.ApplicationWindow):
         self.show_apps_success_label.show()
 
         GLib.timeout_add_seconds(2, self.show_apps_success_label.hide)
+
+    def show_about_popup(self, *args):
+        dialogue = Adw.AboutWindow(transient_for=self)
+        dialogue.set_application_name("BoxBuddy")
+        dialogue.set_version("1.0")
+        dialogue.set_developer_name("Dvlv")
+        dialogue.set_license_type(Gtk.License(Gtk.License.MIT_X11))
+        dialogue.set_comments(
+            """A Graphical Manager for your Distroboxes.
+            \nBoxBuddy is not partnered with or endorsed by any linux distributions or companies.
+            \nTrademarks, service marks, and logos are the property of their respective owners."""
+        )
+        dialogue.set_website("https://github.com/Dvlv/BoxBuddyGTK")
+        dialogue.add_credit_section("Contributors", ["Dvlv"])
+        dialogue.set_developers(["Dvlv"])
+        dialogue.set_application_icon("co.uk.dvlv.boxbuddy")
+        dialogue.show()
 
     def delayed_rerender(self):
         self.load_boxes()
