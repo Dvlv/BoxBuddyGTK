@@ -1,0 +1,33 @@
+app-id: co.uk.dvlv.boxbuddy
+runtime: org.gnome.Platform
+runtime-version: '44'
+sdk: org.gnome.Sdk
+finish-args:
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --filesystem=xdg-data
+  - --talk-name=org.freedesktop.Flatpak
+command: boxbuddy
+modules:
+  - name: boxbuddy
+    buildsystem: simple
+    build-commands:
+      - install -D boxbuddy-fp /app/bin/boxbuddy
+      - cp -r src /app/src
+      - mkdir /app/icons
+      - cp icons/co.uk.dvlv.boxbuddy.svg /app/icons/co.uk.dvlv.boxbuddy.svg
+
+      - mkdir -p /app/share/applications
+      - install -D co.uk.dvlv.boxbuddy.desktop /app/share/applications/
+
+      - install -Dp -m 644 co.uk.dvlv.boxbuddy.metainfo.xml /app/share/metainfo/co.uk.dvlv.boxbuddy.metainfo.xml
+
+      - mkdir -p /app/share/icons/hicolor/scalable/apps
+      - install -D icons/co.uk.dvlv.boxbuddy.svg /app/share/icons/hicolor/scalable/apps
+    sources:
+      - type: git
+        url: https://github.com/Dvlv/BoxBuddyGTK
+        tag: release
+        commit: db558950875ec847de3c092ef79273e4b6582648
+        builddir: true
+
