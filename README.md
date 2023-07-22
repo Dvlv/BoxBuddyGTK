@@ -3,12 +3,23 @@ Unofficial GUI for managing your Distroboxes. Written with GTK4 + Libadwaita.
 
 Old Qt version available [here](https://github.com/Dvlv/BoxBuddy)
 
+Note that this does not come with Podman or Distrobox, those will need to be installed on the host.
 
 ![Main Menu](docs/screenshot-1.png)
 
 
 ## Installing
 Flathub soon maybe.
+
+For now:
+
+- Clone or download this repo
+- `flatpak install boxbuddy.flatpak`
+
+
+## Developing
+
+Written with Python3.10+ Gtk4 and Libadwaita.
 
 ### Building Flatpak
 - Install `flatpak-builder`
