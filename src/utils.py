@@ -42,33 +42,34 @@ def is_flatpak() -> bool:
     return False
 
 
-def get_imgs_dir() -> str:
-    """
-    Returns local imgs dir if local, else XDG_DATA
-    """
-    imgs_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
-
-    return os.path.join(imgs_dir, "imgs")
-
-
 def get_distro_img(distro: str):
     """
-    Gets path to icon for provided distro
+    Gets icon for provided distro
     """
-    imgs_dir = get_imgs_dir()
-    img_filename = distro + ".png"
+    distro_colours = {
+        "ubuntu": "#FF4400",
+        "debian": "#da5555",
+        "centos": "#ff6600",
+        "oracle": "#ff0000",
+        "fedora": "blue",
+        "arch": "#12aaff",
+        "alma": "#dadada",
+        "slackware": "#6145a7",
+        "gentoo": "#daaada",
+        "kali": "#000000",
+        "alpine": "#2147ea",
+        "clearlinux": "#56bbff",
+        "void": "#abff12",
+        "amazon": "#de5412",
+        "rocky": "#91ff91",
+        "redhat": "#ff6662",
+        "opensuse": "#daff00",
+        "mageia": "#b612b6",
+    }
 
-    img_fullpath = os.path.join(imgs_dir, img_filename)
-    if os.path.exists(img_fullpath):
-        return img_fullpath
+    colour = distro_colours[distro] if distro in distro_colours else "#000000"
 
-    img_filename = distro + ".svg"
-    img_fullpath = os.path.join(imgs_dir, img_filename)
-
-    if os.path.exists(img_fullpath):
-        return img_fullpath
-
-    return ""
+    return f"<span foreground='{colour}'>⬤</span>"
 
 
 def has_distrobox_installed() -> bool:

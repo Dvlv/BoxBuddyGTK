@@ -98,7 +98,8 @@ class MainWindow(Gtk.ApplicationWindow):
 
             tab_title_label = Gtk.Label(label=box.name)
 
-            tab_title_img = Gtk.Image.new_from_file(get_distro_img(box.distro))
+            tab_title_img = Gtk.Label()
+            tab_title_img.set_markup(get_distro_img(box.distro))
 
             tab_title.append(tab_title_img)
             tab_title.append(tab_title_label)
@@ -152,7 +153,8 @@ class MainWindow(Gtk.ApplicationWindow):
         vbox.set_margin_end(10)
 
         # title
-        page_img = Gtk.Image.new_from_file(get_distro_img(box.distro))
+        page_img = Gtk.Label()
+        page_img.set_markup(get_distro_img(box.distro))
         page_title = Gtk.Label(label=f"{box.name}")
         page_title.add_css_class("title-1")
         page_status = Gtk.Label(label=box.status)

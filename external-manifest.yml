@@ -14,8 +14,6 @@ modules:
     build-commands:
       - install -D boxbuddy-fp /app/bin/boxbuddy
       - cp -r src /app/src
-      - mkdir /app/icons
-      - cp icons/co.uk.dvlv.boxbuddy.svg /app/icons/co.uk.dvlv.boxbuddy.svg
 
       - mkdir -p /app/share/applications
       - install -D co.uk.dvlv.boxbuddy.desktop /app/share/applications/
@@ -24,6 +22,9 @@ modules:
 
       - mkdir -p /app/share/icons/hicolor/scalable/apps
       - install -D icons/co.uk.dvlv.boxbuddy.svg /app/share/icons/hicolor/scalable/apps
+
+      - mkdir /app/icons
+      - cp icons/co.uk.dvlv.boxbuddy.svg /app/icons/co.uk.dvlv.boxbuddy.svg
     sources:
       - type: git
         url: https://github.com/Dvlv/BoxBuddyGTK
