@@ -7,13 +7,7 @@
   <launchable type="desktop-id">co.uk.dvlv.boxbuddy.desktop</launchable>
   <summary>A Graphical Distrobox Manager</summary>
   <description>
-    <p>
-      A Graphical Application for managing your Distroboxes.
-    </p>
-    <p>
-        Distrobox allows the installation of many different distributions as containers, enabling the use of different package managers to run software which may not be installable on your host system.
-    </p>
-    <p>BoxBuddy helps to create, use, and update distroboxes, as well as giving easy access to the installed applications (which can be easily added to the host's menu like a native application).</p>
+    <p>BoxBuddy is a graphical interface for Distrobox which helps to create, use, and update distroboxes, as well as giving easy access to the installed applications (which can be easily added to the host's menu like a native application).</p>
     <p>
         NOTE: BoxBuddy does not package Docker/Podman or Distrobox, they will need to be installed on your system separately.
     </p>
@@ -41,6 +35,6 @@
   <url type="homepage">https://github.com/Dvlv/BoxBuddyGTK</url>
 
   <releases>
-    <release version="0.1.0" date="2023-07-20"/>
+    <release version="1.0.0" date="2023-07-29"/>
 </releases>
 </component>
