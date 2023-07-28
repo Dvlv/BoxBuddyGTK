@@ -29,6 +29,6 @@ modules:
       - type: git
         url: https://github.com/Dvlv/BoxBuddyGTK
         tag: 1.0.0
-        commit: f90703344f4f21554bbf186ad7d7699f31769422
+        commit: 9ff823bfe4db90b842578d04e04297800be47a1d
         builddir: true
 
